@@ -84,7 +84,6 @@ def get_color_pallet(image_raw, need_rembg):
     hex_labels = []
     rgb = {}
     for i in range(clt.cluster_centers_.shape[0]):
-        print(tuple(clt.cluster_centers_[i] / 255))
         colors.append(tuple(clt.cluster_centers_[i] / 255))
         hex_ = cs.to_hex(tuple(clt.cluster_centers_[i] / 255))
         hex_labels.append(hex_)

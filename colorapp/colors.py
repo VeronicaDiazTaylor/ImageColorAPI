@@ -3,58 +3,11 @@ import cv2
 import numpy as np
 from rembg import remove
 import matplotlib.colors as cs
-import matplotlib.pyplot as plt
 from sklearn.cluster import KMeans
 
-
-JIS_COLOR_PENCIL = {
-    "薄紅色": (197, 103, 112),
-    "紅色": (187, 62, 83),
-    "赤色": (194, 56, 63),
-    "紅樺色": (128, 65, 61),
-    "朱色": (224, 86, 69),
-    "赤茶色": (173, 78, 57),
-    "茶色": (124, 86, 66),
-    "焦茶色": (87, 69, 58),
-    "橙色": (255, 137, 68),
-    "蜜柑色": (252, 166, 59),
-    "土色": (159, 108, 49),
-    "黄土色": (185, 135, 68),
-    "朽葉色": (132, 116, 97),
-    "山吹色": (251, 189, 45),
-    "卵色": (251, 226, 139),
-    "黄色": (243, 212, 37),
-    "檸檬色": (242, 231, 96),
-    "黄緑色": (148, 166, 57),
-    "松葉色": (69, 119, 49),
-    "灰緑色": (81, 101, 60),
-    "緑色": (0, 137, 84),
-    "若竹色": (58, 177, 120),
-    "深緑色": (35, 93, 80),
-    "常盤色": (44, 106, 75),
-    "青磁色": (128, 165, 143),
-    "薄青緑色": (49, 157, 166),
-    "青緑色": (0, 106, 104),
-    "納戸色": (0, 94, 108),
-    "水色": (94, 165, 196),
-    "薄青色": (106, 160, 213),
-    "青色": (67, 107, 161),
-    "藍色": (36, 73, 116),
-    "薄群青色": (94, 131, 188),
-    "群青色": (0, 83, 148),
-    "藤色": (162, 147, 204),
-    "藤紫色": (123, 110, 162),
-    "菫色": (106, 65, 131),
-    "薄紫色": (157, 117, 156),
-    "紫色": (74, 63, 117),
-    "赤紫色": (148, 68, 94),
-    "濃赤紫色": (100, 60, 81),
-    "桃色": (216, 130, 165),
-    "白色": (225, 226, 226),
-    "鼠色": (143, 143, 143),
-    "灰色": (118, 118, 118),
-    "黒色": (0, 0, 0),
-}
+from colorapp.base_pallet import JIS_COLOR_PENCIL
+from colorapp.base_pallet import BASE_COLOR_140
+from colorapp.base_pallet import JAPANESE_COLOR_465
 
 
 def __rgb2hsv(rgb):
@@ -62,11 +15,14 @@ def __rgb2hsv(rgb):
     return colorsys.rgb_to_hsv(r / 255, g / 255, b / 255)
 
 
-def get_closest_color(rgb: tuple[int, int, int], base_pallet=JIS_COLOR_PENCIL):
+def get_closest_color(rgb: tuple[int, int, int], pallet='j'):
+    if pallet == 'd':
+        base_pallet = BASE_COLOR_140
+    elif pallet == 'w':
+        base_pallet = JAPANESE_COLOR_465
+    else:
+        base_pallet = JIS_COLOR_PENCIL
     base_hsv = __rgb2hsv(rgb)
-    dh = 0
-    ds = 0
-    dv = 0
     tolerance_h = 0.1
     tolerance_s = 0.1
     tolerance_v = 1
@@ -106,6 +62,15 @@ def get_base_color(image):
 
 def get_color_pallet(image_raw, need_rembg):
     image = cv2.imdecode(image_raw, cv2.IMREAD_UNCHANGED)
+    width, height = image.shape[:2]
+    aspect_ratio = width / height
+    if width > height:
+        new_width = 800
+        new_height = int(new_width / aspect_ratio)
+    else:
+        new_height = 800
+        new_width = int(new_height * aspect_ratio)
+    image = cv2.resize(image, (new_width, new_height))
     if need_rembg:
         image = remove(image)
     img = cv2.cvtColor(image, cv2.COLOR_BGRA2RGBA)
@@ -119,6 +84,7 @@ def get_color_pallet(image_raw, need_rembg):
     hex_labels = []
     rgb = {}
     for i in range(clt.cluster_centers_.shape[0]):
+        print(tuple(clt.cluster_centers_[i] / 255))
         colors.append(tuple(clt.cluster_centers_[i] / 255))
         hex_ = cs.to_hex(tuple(clt.cluster_centers_[i] / 255))
         hex_labels.append(hex_)
@@ -126,7 +92,3 @@ def get_color_pallet(image_raw, need_rembg):
     dc = dict(zip(hex_labels, hist))
     dc_sorted = sorted(dc.items(), key=lambda x: x[1], reverse=True)
     return dc_sorted, rgb
-
-
-def get_nearest_color(image):
-    pass

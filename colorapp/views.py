@@ -1,15 +1,14 @@
-import os
-import base64
-
 import numpy as np
-from flask import render_template, request, redirect, url_for, jsonify
+from flask import render_template, request
 from colorapp import app
 import colorapp.colors as colors
 
 
-def __error(message, replace=[]):
+def __error(message, replace=None):
+    if replace is None:
+        replace = []
     for i in range(len(replace)):
-        message = message.replace('{%' + i + '}', replace[i])
+        message = message.replace('{%' + str(i) + '}', replace[i])
     return message, 400
 
 
@@ -20,7 +19,6 @@ def index():
     elif request.method == 'POST':
         response = request.form
         file = request.files['image_file']
-        image_name = file.filename
         stream = file.stream
         img_raw = np.asarray(bytearray(stream.read()), dtype=np.uint8)
         process = response['process']
@@ -36,10 +34,11 @@ def index():
             }
             return render_template('colorapp/basecolor.html', result=result)
         elif process == 'nearest-base-color':
+            base_pallet = response['base_pallet']
             base_color_hex = color_pallet[0][0]
             base_color_rgb = rgb[base_color_hex]
             base_color_hex = colors.rgb2hex(*base_color_rgb)
-            nearest_color_rgb, nearest_color_name = colors.get_closest_color(base_color_rgb)
+            nearest_color_rgb, nearest_color_name = colors.get_closest_color(base_color_rgb, base_pallet)
             nearest_color_hex = colors.rgb2hex(*nearest_color_rgb)
             result = {
                 'base': {

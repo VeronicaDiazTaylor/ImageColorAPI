@@ -2,8 +2,9 @@
 
 {% block content %}
 <div class="container">
+    <h1>ImageColorAPI</h1>
     <h2>ベースカラー</h2>
-    <span style="color: {{ result.base.hex }};">■ {{ result.base.hex }} {{ result.base.rgb }}</span><br />
+    <span style="color: {{ result.base.hex }};">■ {{ result.base.hex }} {{ result.base.rgb }}</span><br /><br />
     <h2>近似カラー</h2>
     <span style="color: {{ result.nearest.hex }};">■ {{ result.nearest.name }} {{ result.nearest.hex }} {{ result.nearest.rgb }}</span>
 </div>

@@ -2,9 +2,10 @@
 
 {% block content %}
 <div class="container">
-    <h2>処理する画像を選択</h2>
+    <h1>ImageColorAPI</h1>
+    <h2>処理準備</h2>
     <form action="{{url_for('index')}}" method="POST" enctype="multipart/form-data">
-        <input type="file" id="image_file" name="image_file" accept="image/png, image/jpeg"><br />
+        <input type="file" id="image_file" name="image_file" accept="image/png, image/jpeg" required="required"><br />
         <input type="checkbox" id="remove_background" name="remove_background" /><label for="remove_background">無駄な背景を消す</label>
         <br /><br />
         <select id="process" name="process">
@@ -15,6 +16,6 @@
         <br /><br />
         <input type="submit" value="プロセス開始">
     </form>
-    <script src="{{ url_for('static', filename='javascript/base_pallet_dropdown.js') }}"></script>
+    <script src="{{ url_for('static', filename='javascript/dropdown.js') }}"></script>
 </div>
 {% endblock %}

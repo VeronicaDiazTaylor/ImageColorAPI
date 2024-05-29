@@ -1,0 +1,12 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="container">
+    <h2>カラーパレット</h2>
+    <ul>
+        {% for item in result.color_pallet %}
+        <li><span style="color: {{ item[0] }};">■ {{ item[0] }} {{ result.rgb[item[0]] }}</span></li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

@@ -1,0 +1,19 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="container"><br />
+    <h2>処理する画像を選択</h2>
+    <form action="{{url_for('index')}}" method="POST" enctype="multipart/form-data">
+        <input type="file" id="image_file" name="image_file" accept="image/png, image/jpeg"><br />
+        <input type="checkbox" id="remove_background" name="remove_background" /><label for="remove_background">無駄な背景を消す</label>
+        <br /><br />
+        <select id="process" name="process">
+            <option value="base-color">ベースカラー抽出</option>
+            <option value="color-pallet">カラーパレット作成</option>
+            <option value="nearest-base-color">近似ベースカラー抽出</option>
+        </select>
+        <br /><br />
+        <input type="submit" value="プロセス開始">
+    </form>
+</div>
+{% endblock %}

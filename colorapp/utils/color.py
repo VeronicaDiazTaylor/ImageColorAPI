@@ -7,6 +7,9 @@ from sklearn.cluster import KMeans
 from colorapp.utils.pallet import PALLET
 
 
+BIT_DEEP = [16, 256, 4096, 65536, 262144, 16777216]
+
+
 def hex2rgb(hex_value) -> tuple[int, int, int]:
     hex_code = hex_value.lstrip("#")
     rgb_code = [int(hex_code[i:i + 2], 16) for i in range(0, 6, 2)]
@@ -30,9 +33,18 @@ def get_color_pallet(n_img, n_clusters=5):
     colors = []
     hex_labels = []
     rgb = {}
+    all_alpha = []
     for i in range(clt.cluster_centers_.shape[0]):
-        colors.append(tuple(clt.cluster_centers_[i] / 255))
-        hex_ = cs.to_hex(tuple(clt.cluster_centers_[i] / 255))
+        all_alpha.append(clt.cluster_centers_[i][3])
+    max_alpha = max(all_alpha)
+    divide = 255
+    for bit_max in [16, 256, 4096, 65536, 262144, 16777216]:
+        if max_alpha < bit_max:
+            divide = bit_max - 1
+            break
+    for i in range(clt.cluster_centers_.shape[0]):
+        colors.append(tuple(clt.cluster_centers_[i] / divide))
+        hex_ = cs.to_hex(tuple(clt.cluster_centers_[i] / divide))
         hex_labels.append(hex_)
         rgb[hex_] = hex2rgb(hex_)
     dc = dict(zip(hex_labels, hist))

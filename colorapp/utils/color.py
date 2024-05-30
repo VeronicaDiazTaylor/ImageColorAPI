@@ -30,7 +30,6 @@ def get_color_pallet(n_img, n_clusters=5):
     clt.fit(n_img)
     labels = np.unique(clt.labels_)
     hist, _ = np.histogram(clt.labels_, bins=np.arange(len(labels) + 1))
-    colors = []
     hex_labels = []
     rgb = {}
     all_alpha = []
@@ -43,7 +42,6 @@ def get_color_pallet(n_img, n_clusters=5):
             divide = bit_max - 1
             break
     for i in range(clt.cluster_centers_.shape[0]):
-        colors.append(tuple(clt.cluster_centers_[i] / divide))
         hex_ = cs.to_hex(tuple(clt.cluster_centers_[i] / divide))
         hex_labels.append(hex_)
         rgb[hex_] = hex2rgb(hex_)

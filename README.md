@@ -18,3 +18,6 @@
 - [原色大辞典](https://www.colordic.org/)
 - [和色大辞典](https://www.colordic.org/w)
 - [洋色大辞典](https://www.colordic.org/y)
+
+### アイコン画像
+[Icons8](https://icons8.jp/)より拝借

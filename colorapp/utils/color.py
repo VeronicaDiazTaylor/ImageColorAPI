@@ -53,9 +53,9 @@ def get_color_pallet(n_img, n_clusters=5):
 def get_nearest_color(rgb: tuple[int, int, int], pallet_identifier='j'):
     base_pallet = PALLET[pallet_identifier]
     base_hsv = rgb2hsv(rgb)
-    tolerance_h = 0.1
-    tolerance_s = 0.1
-    tolerance_v = 1
+    tolerance_h = 0.01
+    tolerance_s = 0.01
+    tolerance_v = 0.8
     color_entry = {}
     for nm, pallet in base_pallet.items():
         target_hsv = rgb2hsv(pallet)

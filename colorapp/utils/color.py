@@ -7,9 +7,6 @@ from sklearn.cluster import KMeans
 from colorapp.utils.pallet import PALLET
 
 
-BIT_DEEP = [16, 256, 4096, 65536, 262144, 16777216]
-
-
 def hex2rgb(hex_value) -> tuple[int, int, int]:
     hex_code = hex_value.lstrip("#")
     rgb_code = [int(hex_code[i:i + 2], 16) for i in range(0, 6, 2)]

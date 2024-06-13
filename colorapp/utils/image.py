@@ -9,9 +9,9 @@ def create_n_img(image):
     return np.array(list(filter(lambda nim: nim[3] > 0, reshaped_img)))
 
 
-def resize_image(image, max_size=800):
+def resize_image(image, max_size=1000):
     width, height = image.shape[:2]
-    if width > max_size and height > max_size:
+    if max(width, height) <= max_size:
         return image
     aspect_ratio = width / height
     if width > height:

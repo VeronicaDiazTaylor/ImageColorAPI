@@ -29,7 +29,6 @@ def get_color_pallet(n_img, n_clusters=5, dtype=np.uint8):
     hist, _ = np.histogram(clt.labels_, bins=np.arange(len(labels) + 1))
     hex_labels = []
     rgb = {}
-    all_alpha = []
     divide = np.iinfo(dtype).max - 1
     for i in range(clt.cluster_centers_.shape[0]):
         hex_ = cs.to_hex(tuple(clt.cluster_centers_[i] / divide))

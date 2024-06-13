@@ -3,10 +3,14 @@ import numpy as np
 from rembg import remove
 
 
-def create_n_img(image):
-    img = cv2.cvtColor(image, cv2.COLOR_BGRA2RGBA)
-    reshaped_img = np.reshape(img, (img.shape[0] * img.shape[1], 4))
-    return np.array(list(filter(lambda nim: nim[3] > 0, reshaped_img)))
+def create_n_img(image, has_alpha=True):
+    if has_alpha:
+        img = cv2.cvtColor(image, cv2.COLOR_BGRA2RGBA)
+        reshaped_img = np.reshape(img, (img.shape[0] * img.shape[1], 4))
+        return np.array(list(filter(lambda nim: nim[3] > 0, reshaped_img)))
+    else:
+        img = cv2.cvtColor(image, cv2.COLOR_BGRA2RGB)
+        return np.reshape(img, (img.shape[0] * img.shape[1], 3))
 
 
 def resize_image(image, max_size=1000):

@@ -24,14 +24,17 @@ def index():
         stream = file.stream
         img_raw = np.asarray(bytearray(stream.read()), dtype=np.uint8)
         image = cv2.imdecode(img_raw, cv2.IMREAD_UNCHANGED)
-        image = resize_image(image)
+        if 'want_not_to_resize' not in response:
+            image = resize_image(image)
         if 'remove_background' in response:
             image = remove_background(image)
+        dtype = image.dtype
         # カラーパレットの生成
         n_clusters = 5
         if 'n_clusters' in response:
             n_clusters = int(response['n_clusters'])
-        color_pallet, rgb = get_color_pallet(create_n_img(image), n_clusters=n_clusters)
+        n_img = create_n_img(image, 'remove_background' in response)
+        color_pallet, rgb = get_color_pallet(n_img=n_img, n_clusters=n_clusters, dtype=dtype)
         process = response['process']
 
         if process == 'base-color':

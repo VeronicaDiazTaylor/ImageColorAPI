@@ -6,7 +6,8 @@
     <h2>処理準備</h2>
     <form action="{{url_for('index')}}" method="POST" enctype="multipart/form-data">
         <input type="file" id="image_file" name="image_file" accept="image/png, image/jpeg" required="required"><br />
-        <input type="checkbox" id="remove_background" name="remove_background" /><label for="remove_background">無駄な背景を消す</label>
+        <input type="checkbox" id="remove_background" name="remove_background" /><label for="remove_background">無駄な背景を消す</label><br />
+        <input type="checkbox" id="want_not_to_resize" name="want_not_to_resize"/><label for="want_not_to_resize">リサイズをしない</label>
         <br /><br />
         <select id="process" name="process">
             <option value="base-color">ベースカラー抽出</option>

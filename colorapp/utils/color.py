@@ -22,7 +22,7 @@ def rgb2hsv(rgb):
     return colorsys.rgb_to_hsv(r / 255, g / 255, b / 255)
 
 
-def get_color_pallet(n_img, n_clusters=5):
+def get_color_pallet(n_img, n_clusters=5, dtype=np.uint8):
     clt = KMeans(n_clusters=n_clusters)
     clt.fit(n_img)
     labels = np.unique(clt.labels_)
@@ -30,14 +30,7 @@ def get_color_pallet(n_img, n_clusters=5):
     hex_labels = []
     rgb = {}
     all_alpha = []
-    for i in range(clt.cluster_centers_.shape[0]):
-        all_alpha.append(clt.cluster_centers_[i][3])
-    max_alpha = max(all_alpha)
-    divide = 255
-    for bit_max in [16, 256, 4096, 65536, 262144, 16777216]:
-        if max_alpha < bit_max:
-            divide = bit_max - 1
-            break
+    divide = np.iinfo(dtype).max - 1
     for i in range(clt.cluster_centers_.shape[0]):
         hex_ = cs.to_hex(tuple(clt.cluster_centers_[i] / divide))
         hex_labels.append(hex_)

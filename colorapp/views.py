@@ -3,6 +3,7 @@ import numpy as np
 from flask import render_template, request
 
 from colorapp import app
+from colorapp.utils.response import FormResponse
 from colorapp.utils.image import create_n_img
 from colorapp.utils.image import resize_image
 from colorapp.utils.image import remove_background
@@ -17,35 +18,31 @@ def index():
         # ブラウザによるアクセス制御
         return render_template('colorapp/index.html')
     elif request.method == 'POST':
-        # フォームのリザルトを格納
-        response = request.form
         # 画像処理
         file = request.files['image_file']
         stream = file.stream
         img_raw = np.asarray(bytearray(stream.read()), dtype=np.uint8)
         image = cv2.imdecode(img_raw, cv2.IMREAD_UNCHANGED)
-        if 'want_not_to_resize' not in response:
+        # フォームのリスポンスを整形したオブジェクトを生成
+        fr = FormResponse(response=request.form)
+        if fr.need_resize():
             image = resize_image(image)
-        if 'remove_background' in response:
+        if fr.need_rembg():
             image = remove_background(image)
         dtype = image.dtype
         # カラーパレットの生成
-        n_clusters = 5
-        if 'n_clusters' in response:
-            n_clusters = int(response['n_clusters'])
-        n_img = create_n_img(image, 'remove_background' in response)
-        color_pallet, rgb = get_color_pallet(n_img=n_img, n_clusters=n_clusters, dtype=dtype)
-        process = response['process']
+        n_img = create_n_img(image, fr.need_rembg())
+        color_pallet, rgb = get_color_pallet(n_img=n_img, n_clusters=fr.get_n_clusters(), dtype=dtype)
 
-        if process == 'base-color':
+        if fr.request_base_color():
             # ベースカラー
             base_color_hex = color_pallet[0][0]
             base_color_rgb = rgb[base_color_hex]
             result = {'hex': base_color_hex, 'rgb': base_color_rgb}
             return render_template('colorapp/basecolor.html', result=result)
-        elif process == 'nearest-base-color':
+        elif fr.request_nearest_base_color():
             # ニアレストカラー
-            base_pallet = response['base_pallet']
+            base_pallet = fr.get_base_pallet()
             base_color_hex = color_pallet[0][0]
             base_color_rgb = rgb[base_color_hex]
             nearest_color_rgb, nearest_color_name = get_nearest_color(base_color_rgb, base_pallet)

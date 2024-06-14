@@ -4,6 +4,15 @@ from rembg import remove
 
 
 def create_n_img(image, has_alpha=True):
+    """画像をリシェイプし、必要に応じてアルファチャンネルを考慮してフィルタリングする関数
+
+    Args:
+        image: 入力画像
+        has_alpha: アルファチャンネルがあるかどうか（デフォルトはTrue）
+
+    Returns:
+        リシェイプされた画像データのnumpy配列
+    """
     if has_alpha:
         img = cv2.cvtColor(image, cv2.COLOR_BGRA2RGBA)
         reshaped_img = np.reshape(img, (img.shape[0] * img.shape[1], 4))
@@ -14,6 +23,15 @@ def create_n_img(image, has_alpha=True):
 
 
 def resize_image(image, max_size=1000):
+    """画像を指定された最大サイズにリサイズする関数
+
+    Args:
+        image: 入力画像
+        max_size: 最大サイズ（デフォルトは1000）
+
+    Returns:
+        リサイズされた画像
+    """
     width, height = image.shape[:2]
     if max(width, height) <= max_size:
         return image
@@ -28,5 +46,13 @@ def resize_image(image, max_size=1000):
 
 
 def remove_background(image):
+    """画像の背景を削除する関数
+
+    Args:
+        image: 入力画像
+
+    Returns:
+        背景が削除された画像
+    """
     return remove(image)
 

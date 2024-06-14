@@ -8,21 +8,34 @@ from colorapp.utils.pallet import PALLET
 
 
 def hex2rgb(hex_value) -> tuple[int, int, int]:
+    """16進数カラーコードをRGBタプルに変換する関数"""
     hex_code = hex_value.lstrip("#")
     rgb_code = [int(hex_code[i:i + 2], 16) for i in range(0, 6, 2)]
     return rgb_code[0], rgb_code[1], rgb_code[2]
 
 
 def rgb2hex(r, g, b):
+    """RGBタプルを16進数カラーコードに変換する関数"""
     return '#{:02x}{:02x}{:02x}'.format(r, g, b)
 
 
 def rgb2hsv(rgb):
+    """RGBタプルをHSVタプルに変換する関数"""
     r, g, b = rgb
     return colorsys.rgb_to_hsv(r / 255, g / 255, b / 255)
 
 
 def get_color_pallet(n_img, n_clusters=5, dtype=np.uint8):
+    """画像から色のパレットを取得する関数
+
+    Args:
+        n_img: 画像データ
+        n_clusters: クラスターの数（デフォルトは5）
+        dtype: データ型（デフォルトはnp.uint8）
+
+    Returns:
+        パレットとそのRGB値のディクショナリ
+    """
     clt = KMeans(n_clusters=n_clusters)
     clt.fit(n_img)
     labels = np.unique(clt.labels_)
@@ -40,6 +53,15 @@ def get_color_pallet(n_img, n_clusters=5, dtype=np.uint8):
 
 
 def get_nearest_color(rgb: tuple[int, int, int], pallet_identifier='j'):
+    """RGBカラーから最も近い色をパレット内で探す関数
+
+    Args:
+        rgb: RGBカラータプル
+        pallet_identifier: 使用するパレットの識別子（デフォルトは'j'）
+
+    Returns:
+        最も近い色のRGB値とその名前
+    """
     base_pallet = PALLET[pallet_identifier]
     base_hsv = rgb2hsv(rgb)
     tolerance_h = 0.01

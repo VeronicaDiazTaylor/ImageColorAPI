@@ -30,8 +30,8 @@ def get_color_pallet(n_img, n_clusters=5, dtype=np.uint8):
 
     Args:
         n_img: 画像データ
-        n_clusters: クラスターの数（デフォルトは5）
-        dtype: データ型（デフォルトはnp.uint8）
+        n_clusters: クラスターの数 (デフォルトは5)
+        dtype: データ型 (デフォルトはnp.uint)
 
     Returns:
         パレットとそのRGB値のディクショナリ
@@ -57,7 +57,7 @@ def get_nearest_color(rgb: tuple[int, int, int], pallet_identifier='j'):
 
     Args:
         rgb: RGBカラータプル
-        pallet_identifier: 使用するパレットの識別子（デフォルトは'j'）
+        pallet_identifier: 使用するパレットの識別子（デフォルトは'j')
 
     Returns:
         最も近い色のRGB値とその名前

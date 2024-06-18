@@ -8,7 +8,7 @@ def create_n_img(image, has_alpha=True):
 
     Args:
         image: 入力画像
-        has_alpha: アルファチャンネルがあるかどうか（デフォルトはTrue）
+        has_alpha: アルファチャンネルがあるかどうか (デフォルトはTrue)
 
     Returns:
         リシェイプされた画像データのnumpy配列
@@ -27,7 +27,7 @@ def resize_image(image, max_size=1000):
 
     Args:
         image: 入力画像
-        max_size: 最大サイズ（デフォルトは1000）
+        max_size: 最大サイズ (デフォルトは1000)
 
     Returns:
         リサイズされた画像

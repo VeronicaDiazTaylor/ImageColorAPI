@@ -6,7 +6,7 @@
     <h2>カラーパレット</h2>
     <ul>
         {% for item in result.color_pallet %}
-        <li><span style="color: {{ item[0] }};">■ {{ item[0] }} {{ result.rgb[item[0]] }}</span></li>
+        <li><span style="color: {{ item[0] }};">■ {{ item[0] }} {{ result.rgb[item[0]] }}</span>  <input type="text" value={{ item[0] }} disabled /></li>
         {% endfor %}
     </ul>
 </div>

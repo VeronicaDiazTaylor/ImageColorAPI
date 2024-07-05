@@ -1,4 +1,4 @@
-# ImageColorAPI
+# ImageColorApp
 アップロードした画像からベースカラーの抽出やカラーパレットの作成、近似する色を取得するWebAPI  
 
 ### 使用言語

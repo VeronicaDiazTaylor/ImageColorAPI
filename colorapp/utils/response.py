@@ -2,7 +2,7 @@ class FormResponse:
     __need_rembg: bool = False # 背景を削除するかどうかのフラグ
     __need_resize: bool = True # 画像のリサイズが必要かどうかのフラグ
     __n_clusters: int = 5 # クラスタの数
-    __base_pallet: str = '' # 基本のパレット
+    __base_pallet: str = 'd' # 基本のパレット
     __process: str # 処理内容
 
     def __init__(self, response):
